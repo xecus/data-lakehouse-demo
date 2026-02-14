@@ -46,6 +46,10 @@ services:
       - "19120:19120"
     environment:
       QUARKUS_HTTP_PORT: 19120
+      NESSIE_VERSION_STORE_TYPE: ROCKSDB
+      NESSIE_VERSION_STORE_ROCKSDB_DATABASE_PATH: /data/nessie-rocksdb
+    volumes:
+      - nessie-data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:19120/api/v2/config"]
       interval: 30s
@@ -78,6 +82,8 @@ services:
 
 volumes:
   minio-data:
+    driver: local
+  nessie-data:
     driver: local
 
 networks:
