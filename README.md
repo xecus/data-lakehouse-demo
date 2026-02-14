@@ -85,17 +85,13 @@ SHOW CATALOGS;
 
 ---
 
-## デモ手順
+## クイックデモ（基本の分析クエリ）
 
 ### Step 1: テーブルのセットアップ
 
-`sql/setup.sql` を実行してスキーマとテーブルを作成します。
-
 ```bash
-docker exec trino trino --file /etc/trino/sql/setup.sql
+make setup
 ```
-
-または、Trinoシェル上で `sql/setup.sql` の内容をコピペしても構いません。
 
 作成されるテーブル:
 
@@ -107,87 +103,61 @@ iceberg.ecommerce
 └── order_items  (注文明細)
 ```
 
-### Step 2: 分析クエリの実行
-
-`sql/demo.sql` に以下のクエリが含まれています。
+### Step 2: 基本分析クエリの実行
 
 ```bash
-docker exec trino trino --file /etc/trino/sql/demo.sql
+make demo
 ```
 
 | クエリ | 内容 |
 |---|---|
-| クエリ1 | 日次売上集計 |
-| クエリ2 | 国別顧客数・売上 |
-| クエリ3 | 商品カテゴリ別売上ランキング |
-| クエリ4 | 顧客別購入履歴・LTV |
-| クエリ5 | 月次売上トレンド |
-
-実行例:
-
-```
--- クエリ2: 国別売上
- country | customer_count | order_count | total_revenue
----------+----------------+-------------+---------------
- Japan   |              3 |           3 |     171500.00
- USA     |              2 |           2 |     119000.00
-```
+| Q1 | 日次売上集計 |
+| Q2 | 国別顧客数・売上 |
+| Q3 | 商品カテゴリ別売上ランキング |
+| Q4 | 顧客別購入履歴・LTV |
+| Q5 | 月次売上トレンド |
 
 ---
 
-## Iceberg の主要機能デモ
+## ハンズオン シナリオ
 
-### タイムトラベル（過去のスナップショットを参照）
+Iceberg と Nessie の機能を段階的に体験できる6つのシナリオを用意しています。
 
-```sql
--- スナップショット履歴を確認
-SELECT snapshot_id, committed_at, operation
-FROM iceberg.ecommerce."orders$snapshots"
-ORDER BY committed_at;
+| シナリオ | テーマ | 難易度 | ドキュメント |
+|---|---|---|---|
+| [01](./sql/scenarios/01_iceberg_acid.sql) | **Iceberg ACID操作** — UPDATE / DELETE / MERGE | ★★☆☆☆ | [解説](./docs/scenario-01-iceberg-acid.md) |
+| [02](./sql/scenarios/02_iceberg_time_travel.sql) | **タイムトラベル** — 過去データの参照・復元 | ★★☆☆☆ | [解説](./docs/scenario-02-iceberg-time-travel.md) |
+| [03](./sql/scenarios/03_iceberg_schema_evolution.sql) | **スキーマ進化** — ダウンタイムなしのカラム変更 | ★★☆☆☆ | [解説](./docs/scenario-03-iceberg-schema-evolution.md) |
+| [04](./sql/scenarios/04_iceberg_metadata.sql) | **メタデータ探索** — $files / $snapshots / EXPLAIN | ★★★☆☆ | [解説](./docs/scenario-04-iceberg-metadata.md) |
+| [05](./sql/scenarios/05_nessie_branch.sql) | **Nessieブランチ** — Gitライクなデータ開発ワークフロー | ★★★★☆ | [解説](./docs/scenario-05-nessie-branch.md) |
+| [06](./sql/scenarios/06_nessie_audit.sql) | **Nessie監査** — タグ管理とコミット履歴 | ★★★★☆ | [解説](./docs/scenario-06-nessie-audit.md) |
 
--- 特定のスナップショット時点のデータを参照
-SELECT * FROM iceberg.ecommerce.orders
-FOR VERSION AS OF <snapshot_id>;
+### 学習パス
+
+```
+基礎                                                       応用
+ │                                                          │
+setup → demo → [01 ACID] → [02 TimTravel] → [03 Schema] → [04 Metadata] → [05 Branch] → [06 Audit]
+               └─── Icebergを「使う」 ───┘  └─── Icebergを「理解する」 ──┘  └── Nessieを「活かす」 ──┘
 ```
 
-### スキーマ進化（ダウンタイムなしでカラム追加）
-
-```sql
-ALTER TABLE iceberg.ecommerce.orders ADD COLUMN coupon_code VARCHAR;
-SELECT * FROM iceberg.ecommerce.orders LIMIT 3;
--- 既存レコードの coupon_code は NULL になる（エラーにならない）
-```
-
-### パーティション情報の確認
-
-```sql
-SELECT * FROM iceberg.ecommerce."orders$partitions";
-```
-
----
-
-## Nessie のブランチ機能デモ
-
-データに対して Git と同じようなブランチ・マージ操作ができます。
-
-### ブランチの作成と切り替え
+### シナリオの実行方法
 
 ```bash
-# mainブランチの現在のhashを取得
-HASH=$(curl -s http://localhost:19120/api/v2/trees/main | jq -r '.reference.hash')
+# 個別実行
+make scenario-01   # ACID操作
+make scenario-02   # タイムトラベル
+make scenario-03   # スキーマ進化
+make scenario-04   # メタデータ探索
+make scenario-05   # Nessieブランチ
+make scenario-06   # Nessie監査
 
-# dev ブランチを作成
-curl -s -X POST "http://localhost:19120/api/v2/trees" \
-  -H "Content-Type: application/json" \
-  -d "{\"type\": \"BRANCH\", \"name\": \"dev\", \"hash\": \"${HASH}\", \"reference\": {\"type\": \"BRANCH\", \"name\": \"main\"}}" | jq .
+# 全シナリオを順番に実行
+make scenario-all
 
-# ブランチ一覧を確認
-curl -s http://localhost:19120/api/v2/trees | jq '[.references[] | {type, name}]'
+# 大量データを投入してパーティション効果を体感（オプション）
+make seed
 ```
-
-### devブランチのデータを操作（mainには影響しない）
-
-Trinoで `iceberg.ecommerce` のカタログ設定を `nessie-ref=dev` に切り替えることで、ブランチ分離が可能です。これにより**本番データに影響を与えずにデータ実験・ETLテスト**ができます。
 
 ---
 
@@ -276,14 +246,30 @@ docker compose down -v && docker compose up -d
 
 ```
 .
-├── docker-compose.yml        # 全サービスの定義
+├── docker-compose.yml            # 全サービスの定義
+├── Makefile                      # 操作コマンド集
 ├── trino/
 │   └── catalog/
-│       └── iceberg.properties  # IcebergカタログのTrino設定
+│       └── iceberg.properties    # IcebergカタログのTrino設定
 ├── sql/
-│   ├── setup.sql               # テーブル定義 + サンプルデータ投入
-│   └── demo.sql                # 分析クエリ集
-└── README.md
+│   ├── setup.sql                 # テーブル定義 + サンプルデータ投入
+│   ├── demo.sql                  # 基本分析クエリ集
+│   ├── scenarios/                # ハンズオンシナリオSQL
+│   │   ├── 01_iceberg_acid.sql
+│   │   ├── 02_iceberg_time_travel.sql
+│   │   ├── 03_iceberg_schema_evolution.sql
+│   │   ├── 04_iceberg_metadata.sql
+│   │   ├── 05_nessie_branch.sql
+│   │   └── 06_nessie_audit.sql
+│   └── seed/
+│       └── large_dataset.sql     # 大量サンプルデータ（パーティション効果確認用）
+└── docs/                         # 各シナリオの解説ドキュメント
+    ├── scenario-01-iceberg-acid.md
+    ├── scenario-02-iceberg-time-travel.md
+    ├── scenario-03-iceberg-schema-evolution.md
+    ├── scenario-04-iceberg-metadata.md
+    ├── scenario-05-nessie-branch.md
+    └── scenario-06-nessie-audit.md
 ```
 
 ---
