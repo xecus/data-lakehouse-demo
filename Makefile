@@ -1,5 +1,5 @@
 .PHONY: up down reset setup demo trino logs ps help \
-        seed \
+        seed restart \
         scenario-01 scenario-02 scenario-03 scenario-04 scenario-05 scenario-06 \
         scenario-all
 
@@ -13,6 +13,7 @@ help:
 	@echo "  reset         全サービスを停止してデータも削除"
 	@echo "  setup         テーブル作成とサンプルデータ投入"
 	@echo "  seed          大量サンプルデータ投入（パーティション効果確認用）"
+	@echo "  restart       データを削除して起動・セットアップまで一発実行"
 	@echo "  demo          基本分析クエリを実行"
 	@echo "  trino         Trinoシェルに接続"
 	@echo "  logs          全サービスのログをリアルタイム表示"
@@ -37,6 +38,13 @@ down:
 reset:
 	docker compose down -v
 	@echo "データを含む全リソースを削除しました"
+
+restart:
+	docker compose down -v
+	docker compose up -d
+	@echo "サービスが healthy になるまで待機中..."
+	docker compose wait trino
+	$(MAKE) setup
 
 setup:
 	docker exec trino trino --file /etc/trino/sql/setup.sql
