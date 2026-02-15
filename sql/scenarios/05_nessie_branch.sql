@@ -48,9 +48,10 @@ SELECT COUNT(*) AS product_count FROM iceberg.ecommerce.products;
 --
 -- (2) feature/add-books ブランチを作成
 --     HASH=$(curl -s http://localhost:19120/api/v2/trees/main | jq -r '.reference.hash')
---     curl -s -X POST "http://localhost:19120/api/v2/trees" \
+--     curl -s -X POST \
 --       -H "Content-Type: application/json" \
---       -d "{\"type\":\"BRANCH\",\"name\":\"feature/add-books\",\"hash\":\"${HASH}\",\"reference\":{\"type\":\"BRANCH\",\"name\":\"main\"}}" | jq .
+--       -d "{\"name\":\"main\",\"type\":\"BRANCH\",\"hash\":\"${HASH}\"}" \
+--       "http://localhost:19120/api/v2/trees?name=feature/add-books&type=BRANCH" | jq .
 --
 -- (3) ブランチ一覧を確認
 --     curl -s http://localhost:19120/api/v2/trees | jq '[.references[] | {type, name}]'

@@ -150,12 +150,7 @@ WHERE order_date BETWEEN DATE '2024-01-01' AND DATE '2024-01-31';
 -- ============================================================
 -- Step 7: $entries — マニフェストエントリの詳細
 -- ============================================================
--- 各データファイルのステータス（追加/削除/存在）を確認
--- NOTE: data_file 列は struct 型のため Trino での直接参照は非推奨。
---       status と snapshot_id のみを参照する。
-
-SELECT
-    status,      -- 0=EXISTING, 1=ADDED, 2=DELETED
-    snapshot_id
-FROM iceberg.ecommerce."orders$entries"
-LIMIT 10;
+-- NOTE: $entries テーブルは position delete ファイルが存在する場合、
+--       Trino で "type is null" NPE が発生する既知の問題があるためスキップ。
+--       代わりに $manifests の added_data_files_count / deleted_data_files_count
+--       でファイルの追加/削除状況を確認してください。
