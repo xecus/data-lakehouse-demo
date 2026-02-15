@@ -41,9 +41,9 @@ reset:
 
 restart:
 	docker compose down -v
-	docker compose up -d
 	@echo "サービスが healthy になるまで待機中..."
-	docker compose wait trino
+	docker compose up -d --wait minio nessie trino
+	docker compose up minio-setup
 	$(MAKE) setup
 
 setup:
