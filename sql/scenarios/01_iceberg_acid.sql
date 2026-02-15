@@ -16,7 +16,7 @@
 --
 -- 実行方法:
 --   make scenario-01
---   または: docker exec trino trino --file /etc/trino/sql/scenarios/01_iceberg_acid.sql
+--   または: docker exec demo1-trino trino --file /etc/trino/sql/scenarios/01_iceberg_acid.sql
 -- ============================================================
 
 -- ------------------------------------------------------------

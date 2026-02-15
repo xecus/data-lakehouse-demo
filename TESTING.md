@@ -80,7 +80,7 @@ INSERT: 7 rows
 セットアップ後の行数確認:
 
 ```bash
-docker exec trino trino --execute "
+docker exec demo1-trino trino --execute "
 SELECT 'customers'   AS tbl, COUNT(*) AS cnt FROM iceberg.ecommerce.customers
 UNION ALL SELECT 'products',    COUNT(*) FROM iceberg.ecommerce.products
 UNION ALL SELECT 'orders',      COUNT(*) FROM iceberg.ecommerce.orders

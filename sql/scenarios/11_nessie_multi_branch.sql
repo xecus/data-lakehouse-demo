@@ -20,7 +20,7 @@
 --
 -- 実行方法:
 --   make scenario-11
---   または: docker exec trino trino --file /etc/trino/sql/scenarios/11_nessie_multi_branch.sql
+--   または: docker exec demo1-trino trino --file /etc/trino/sql/scenarios/11_nessie_multi_branch.sql
 -- ============================================================
 
 -- ============================================================

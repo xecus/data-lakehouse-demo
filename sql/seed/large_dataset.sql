@@ -18,7 +18,7 @@
 --
 -- 実行方法:
 --   make seed
---   または: docker exec trino trino --file /etc/trino/sql/seed/large_dataset.sql
+--   または: docker exec demo1-trino trino --file /etc/trino/sql/seed/large_dataset.sql
 -- ============================================================
 
 -- ------------------------------------------------------------

@@ -2,7 +2,7 @@ services:
   # MinIO - S3-compatible object storage
   minio:
     image: minio/minio:latest
-    container_name: minio
+    container_name: demo1-minio
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -24,7 +24,7 @@ services:
   # Create MinIO bucket
   minio-setup:
     image: minio/mc:latest
-    container_name: minio-setup
+    container_name: demo1-minio-setup
     depends_on:
       minio:
         condition: service_healthy
@@ -41,7 +41,7 @@ services:
   # Nessie - Data catalog with version control
   nessie:
     image: projectnessie/nessie:latest
-    container_name: nessie
+    container_name: demo1-nessie
     ports:
       - "19120:19120"
     environment:
@@ -62,7 +62,7 @@ services:
   # Trino - Distributed SQL query engine
   trino:
     image: trinodb/trino:latest
-    container_name: trino
+    container_name: demo1-trino
     ports:
       - "8080:8080"
     environment:

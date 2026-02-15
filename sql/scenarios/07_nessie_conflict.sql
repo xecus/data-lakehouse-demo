@@ -20,7 +20,7 @@
 --
 -- 実行方法:
 --   make scenario-07
---   または: docker exec trino trino --file /etc/trino/sql/scenarios/07_nessie_conflict.sql
+--   または: docker exec demo1-trino trino --file /etc/trino/sql/scenarios/07_nessie_conflict.sql
 -- ============================================================
 
 -- ============================================================
@@ -60,7 +60,7 @@ ORDER BY product_id;
 -- ⚠️  iceberg_dev カタログを feature/update-prices に向けてください。
 --     trino/catalog/iceberg_dev.properties の ref を変更して Trino を再起動:
 --       iceberg.nessie-catalog.ref=feature/update-prices
---     または docker exec trino trino で以下を実行:
+--     または docker exec demo1-trino trino で以下を実行:
 
 -- feature/update-prices ブランチ: Electronics を10%値上げ
 -- ⚠️  iceberg_dev.properties の ref を feature/update-prices に設定後に実行

@@ -18,7 +18,7 @@
 --
 -- 実行方法:
 --   make scenario-05
---   または: docker exec trino trino --file /etc/trino/sql/scenarios/05_nessie_branch.sql
+--   または: docker exec demo1-trino trino --file /etc/trino/sql/scenarios/05_nessie_branch.sql
 -- ============================================================
 
 -- ============================================================

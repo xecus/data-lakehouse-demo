@@ -14,7 +14,7 @@
 --
 -- 実行方法:
 --   make scenario-08
---   または: docker exec trino trino --file /etc/trino/sql/scenarios/08_iceberg_partition_evolution.sql
+--   または: docker exec demo1-trino trino --file /etc/trino/sql/scenarios/08_iceberg_partition_evolution.sql
 -- ============================================================
 
 -- ============================================================

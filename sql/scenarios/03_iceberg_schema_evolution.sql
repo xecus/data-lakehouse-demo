@@ -11,7 +11,7 @@
 --
 -- 実行方法:
 --   make scenario-03
---   または: docker exec trino trino --file /etc/trino/sql/scenarios/03_iceberg_schema_evolution.sql
+--   または: docker exec demo1-trino trino --file /etc/trino/sql/scenarios/03_iceberg_schema_evolution.sql
 -- ============================================================
 
 -- ------------------------------------------------------------

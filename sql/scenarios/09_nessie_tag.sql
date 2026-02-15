@@ -15,7 +15,7 @@
 --
 -- 実行方法:
 --   make scenario-09
---   または: docker exec trino trino --file /etc/trino/sql/scenarios/09_nessie_tag.sql
+--   または: docker exec demo1-trino trino --file /etc/trino/sql/scenarios/09_nessie_tag.sql
 -- ============================================================
 
 -- ============================================================

@@ -72,7 +72,7 @@ trino     Up (healthy)
 ### Trinoに接続
 
 ```bash
-docker exec -it trino trino
+docker exec -it demo1-trino trino
 ```
 
 起動できたら以下でカタログを確認します。
@@ -210,10 +210,10 @@ docker compose up -d
 docker compose logs -f
 
 # Trino シェルに接続
-docker exec -it trino trino
+docker exec -it demo1-trino trino
 
 # セットアップSQLの実行
-docker exec trino trino --file /etc/trino/sql/setup.sql
+docker exec demo1-trino trino --file /etc/trino/sql/setup.sql
 
 # サービスの停止（データは保持）
 docker compose down

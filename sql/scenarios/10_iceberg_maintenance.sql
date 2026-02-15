@@ -15,7 +15,7 @@
 --
 -- 実行方法:
 --   make scenario-10
---   または: docker exec trino trino --file /etc/trino/sql/scenarios/10_iceberg_maintenance.sql
+--   または: docker exec demo1-trino trino --file /etc/trino/sql/scenarios/10_iceberg_maintenance.sql
 -- ============================================================
 
 -- ============================================================

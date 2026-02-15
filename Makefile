@@ -56,14 +56,14 @@ restart:
 	$(MAKE) setup
 
 setup:
-	docker exec trino trino --file /etc/trino/sql/setup.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/setup.sql
 	@echo "セットアップ完了"
 
 demo:
-	docker exec trino trino --file /etc/trino/sql/demo.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/demo.sql
 
 trino:
-	docker exec -it trino trino
+	docker exec -it demo1-trino trino
 
 logs:
 	docker compose logs -f
@@ -72,52 +72,52 @@ ps:
 	docker compose ps
 
 seed:
-	docker exec trino trino --file /etc/trino/sql/seed/large_dataset.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/seed/large_dataset.sql
 	@echo "大量サンプルデータ投入完了"
 
 scenario-01:
 	@echo "=== シナリオ01: Iceberg ACID操作 ==="
-	docker exec trino trino --file /etc/trino/sql/scenarios/01_iceberg_acid.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/scenarios/01_iceberg_acid.sql
 
 scenario-02:
 	@echo "=== シナリオ02: Iceberg タイムトラベル ==="
-	docker exec trino trino --file /etc/trino/sql/scenarios/02_iceberg_time_travel.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/scenarios/02_iceberg_time_travel.sql
 
 scenario-03:
 	@echo "=== シナリオ03: Iceberg スキーマ進化 ==="
-	docker exec trino trino --file /etc/trino/sql/scenarios/03_iceberg_schema_evolution.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/scenarios/03_iceberg_schema_evolution.sql
 
 scenario-04:
 	@echo "=== シナリオ04: Iceberg メタデータ探索 ==="
-	docker exec trino trino --file /etc/trino/sql/scenarios/04_iceberg_metadata.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/scenarios/04_iceberg_metadata.sql
 
 scenario-05:
 	@echo "=== シナリオ05: Nessie ブランチワークフロー ==="
-	docker exec trino trino --file /etc/trino/sql/scenarios/05_nessie_branch.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/scenarios/05_nessie_branch.sql
 
 scenario-06:
 	@echo "=== シナリオ06: Nessie 監査・コミット履歴 ==="
-	docker exec trino trino --file /etc/trino/sql/scenarios/06_nessie_audit.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/scenarios/06_nessie_audit.sql
 
 scenario-07:
 	@echo "=== シナリオ07: Nessie コンフリクト解決 ==="
-	docker exec trino trino --file /etc/trino/sql/scenarios/07_nessie_conflict.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/scenarios/07_nessie_conflict.sql
 
 scenario-08:
 	@echo "=== シナリオ08: Iceberg パーティション進化 ==="
-	docker exec trino trino --file /etc/trino/sql/scenarios/08_iceberg_partition_evolution.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/scenarios/08_iceberg_partition_evolution.sql
 
 scenario-09:
 	@echo "=== シナリオ09: Nessie タグによるリリース管理 ==="
-	docker exec trino trino --file /etc/trino/sql/scenarios/09_nessie_tag.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/scenarios/09_nessie_tag.sql
 
 scenario-10:
 	@echo "=== シナリオ10: Iceberg テーブルメンテナンス ==="
-	docker exec trino trino --file /etc/trino/sql/scenarios/10_iceberg_maintenance.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/scenarios/10_iceberg_maintenance.sql
 
 scenario-11:
 	@echo "=== シナリオ11: Nessie マルチブランチ並行開発 ==="
-	docker exec trino trino --file /etc/trino/sql/scenarios/11_nessie_multi_branch.sql
+	docker exec demo1-trino trino --file /etc/trino/sql/scenarios/11_nessie_multi_branch.sql
 
 scenario-all: scenario-01 scenario-02 scenario-03 scenario-04 scenario-05 scenario-06
 	@echo "=== 基本シナリオ(01-06)完了 ==="

@@ -3,7 +3,7 @@
 -- ECサイト売上分析 - スキーマ・テーブル定義 + サンプルデータ投入
 --
 -- 実行方法:
---   docker exec trino trino --file /etc/trino/sql/setup.sql
+--   docker exec demo1-trino trino --file /etc/trino/sql/setup.sql
 -- ============================================================
 
 -- スキーマの作成

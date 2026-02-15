@@ -20,7 +20,7 @@
 --
 -- 実行方法:
 --   make scenario-06
---   または: docker exec trino trino --file /etc/trino/sql/scenarios/06_nessie_audit.sql
+--   または: docker exec demo1-trino trino --file /etc/trino/sql/scenarios/06_nessie_audit.sql
 -- ============================================================
 
 -- ============================================================

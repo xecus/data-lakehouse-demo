@@ -17,7 +17,7 @@
 --
 -- 実行方法:
 --   make scenario-04
---   または: docker exec trino trino --file /etc/trino/sql/scenarios/04_iceberg_metadata.sql
+--   または: docker exec demo1-trino trino --file /etc/trino/sql/scenarios/04_iceberg_metadata.sql
 -- ============================================================
 
 -- ============================================================

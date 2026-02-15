@@ -3,7 +3,7 @@
 -- ECサイト売上分析 - 分析クエリ集
 --
 -- 実行方法:
---   docker exec trino trino --file /etc/trino/sql/demo.sql
+--   docker exec demo1-trino trino --file /etc/trino/sql/demo.sql
 --
 -- 前提: setup.sql を先に実行してください
 -- ============================================================

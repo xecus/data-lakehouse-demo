@@ -18,7 +18,7 @@
 --
 -- 実行方法:
 --   make scenario-02
---   または: docker exec trino trino --file /etc/trino/sql/scenarios/02_iceberg_time_travel.sql
+--   または: docker exec demo1-trino trino --file /etc/trino/sql/scenarios/02_iceberg_time_travel.sql
 -- ============================================================
 
 -- ============================================================
