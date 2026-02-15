@@ -134,6 +134,24 @@ GROUP BY category
 ORDER BY category;
 
 -- ============================================================
+-- Step 8: featureブランチを削除（クリーンアップ）
+-- ============================================================
+-- マージ済みのブランチは不要なので削除します。
+-- Git の `git branch -d feature/add-books` に相当する操作です。
+--
+-- ⚠️  別ターミナルで以下を実行してください:
+--
+-- (1) ブランチのハッシュを取得
+--     DEV_HASH=$(curl -s "http://localhost:19120/api/v2/trees/feature%2Fadd-books" | jq -r '.reference.hash')
+--
+-- (2) feature/add-books ブランチを削除
+--     curl -s -X DELETE \
+--       "http://localhost:19120/api/v2/trees/feature%2Fadd-books@${DEV_HASH}" | jq .
+--
+-- (3) ブランチ一覧を確認（feature/add-books が消えていればOK）
+--     curl -s http://localhost:19120/api/v2/trees | jq '[.references[] | {type, name}]'
+
+-- ============================================================
 -- Nessie REST API でブランチ管理を確認
 -- ============================================================
 -- 別ターミナルで実行してください:
@@ -143,8 +161,4 @@ ORDER BY category;
 --
 -- mainブランチのコミット履歴
 --   curl -s "http://localhost:19120/api/v2/trees/main/history" \
---     | jq '.logEntries[0:5] | .[] | {commitTime: .commitMeta.commitTime, message: .commitMeta.message}'
---
--- feature/add-books ブランチのコミット履歴（/ を %2F にURLエンコード）
---   curl -s "http://localhost:19120/api/v2/trees/feature%2Fadd-books/history" \
 --     | jq '.logEntries[0:5] | .[] | {commitTime: .commitMeta.commitTime, message: .commitMeta.message}'
