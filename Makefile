@@ -1,6 +1,7 @@
 .PHONY: up down reset setup demo trino logs ps help \
         seed restart \
         scenario-01 scenario-02 scenario-03 scenario-04 scenario-05 scenario-06 \
+        scenario-07 scenario-08 scenario-09 scenario-10 scenario-11 \
         scenario-all
 
 ## デフォルトターゲット
@@ -26,7 +27,15 @@ help:
 	@echo "  scenario-04   Iceberg メタデータ探索"
 	@echo "  scenario-05   Nessie ブランチワークフロー"
 	@echo "  scenario-06   Nessie 監査・コミット履歴"
-	@echo "  scenario-all  全シナリオを順番に実行"
+	@echo ""
+	@echo "--- 応用シナリオ ---"
+	@echo "  scenario-07   Nessie コンフリクト解決"
+	@echo "  scenario-08   Iceberg パーティション進化"
+	@echo "  scenario-09   Nessie タグによるリリース管理"
+	@echo "  scenario-10   Iceberg テーブルメンテナンス"
+	@echo "  scenario-11   Nessie マルチブランチ並行開発"
+	@echo ""
+	@echo "  scenario-all  基本シナリオ(01-06)を順番に実行"
 
 up:
 	docker compose up -d
@@ -90,5 +99,25 @@ scenario-06:
 	@echo "=== シナリオ06: Nessie 監査・コミット履歴 ==="
 	docker exec trino trino --file /etc/trino/sql/scenarios/06_nessie_audit.sql
 
+scenario-07:
+	@echo "=== シナリオ07: Nessie コンフリクト解決 ==="
+	docker exec trino trino --file /etc/trino/sql/scenarios/07_nessie_conflict.sql
+
+scenario-08:
+	@echo "=== シナリオ08: Iceberg パーティション進化 ==="
+	docker exec trino trino --file /etc/trino/sql/scenarios/08_iceberg_partition_evolution.sql
+
+scenario-09:
+	@echo "=== シナリオ09: Nessie タグによるリリース管理 ==="
+	docker exec trino trino --file /etc/trino/sql/scenarios/09_nessie_tag.sql
+
+scenario-10:
+	@echo "=== シナリオ10: Iceberg テーブルメンテナンス ==="
+	docker exec trino trino --file /etc/trino/sql/scenarios/10_iceberg_maintenance.sql
+
+scenario-11:
+	@echo "=== シナリオ11: Nessie マルチブランチ並行開発 ==="
+	docker exec trino trino --file /etc/trino/sql/scenarios/11_nessie_multi_branch.sql
+
 scenario-all: scenario-01 scenario-02 scenario-03 scenario-04 scenario-05 scenario-06
-	@echo "=== 全シナリオ完了 ==="
+	@echo "=== 基本シナリオ(01-06)完了 ==="
